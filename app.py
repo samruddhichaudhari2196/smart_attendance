@@ -3,6 +3,7 @@ import io
 import base64
 import time
 
+app= Flask(__name__)
 @app.route('/generate_qr')
 def generate_qr():
     # Create a unique token based on the current time (changes every 30 seconds)
