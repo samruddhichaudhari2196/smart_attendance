@@ -1,0 +1,21 @@
+Div class="text-center mb-4">
+    <h4>Scan this to mark attendance:</h4>
+    <img id="qr-display" src="" class="img-fluid border p-2 bg-white" style="max-width: 200px;">
+    <p class="text-muted mt-2">Refreshes every 30 seconds ⏱️</p>
+</div>
+
+<script>
+    // This function asks the server for a new QR code
+    function refreshQR() {
+        fetch('/generate_qr')
+            .then(response => response.json())
+            .then(data => {
+                // Update the image source with the new QR code
+                document.getElementById('qr-display').src = "data:image/png;base64," + data.qr_image;
+            });
+    }
+
+    // Refresh the QR code immediately and then every 30 seconds
+    refreshQR();
+    setInterval(refreshQR, 30000);
+</script>
