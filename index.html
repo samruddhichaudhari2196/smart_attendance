@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Attendance</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light text-center">
+    <div class="container py-5">
+        <h2 class="mb-4">🎓 Scan to Join Class</h2>
+        
+        <div id="reader" style="width: 100%; max-width: 500px; margin: auto;"></div>
+        
+        <div id="result" class="mt-4 p-3 border bg-white d-none">
+            <p id="scan-message" class="fw-bold"></p>
+        </div>
+    </div>
+
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+    // Send the scanned data to our Python server
+    fetch('/scan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            qr_data: decodedText,
+            student_id: "STUDENT_001" // We'll hardcode this for testing
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Server says: " + data.message);
+    });
+
+    html5QrCode.stop();
+}
+
+        let html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start(
+            { facingMode: "user" }, // Use "user" for laptop webcam
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            onScanSuccess
+        );
+    </script>
+</body>
+</html>
