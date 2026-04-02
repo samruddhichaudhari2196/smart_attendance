@@ -1,3 +1,4 @@
+from flask import Flask , jsonify , render_template
 import qrcode
 import io
 import base64
